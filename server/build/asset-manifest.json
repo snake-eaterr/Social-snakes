@@ -1,12 +1,12 @@
 {
   "files": {
-    "main.js": "/static/js/main.3b729683.js",
-    "main.js.map": "/static/js/main.3b729683.js.map",
+    "main.js": "/static/js/main.871248a0.js",
+    "main.js.map": "/static/js/main.871248a0.js.map",
     "index.html": "/index.html",
-    "static/js/main.3b729683.js.LICENSE.txt": "/static/js/main.3b729683.js.LICENSE.txt",
+    "static/js/main.871248a0.js.LICENSE.txt": "/static/js/main.871248a0.js.LICENSE.txt",
     "static/media/snake-doodle.6e0c9acd.jpeg": "/static/media/snake-doodle.6e0c9acd.jpeg"
   },
   "entrypoints": [
-    "static/js/main.3b729683.js"
+    "static/js/main.871248a0.js"
   ]
 }

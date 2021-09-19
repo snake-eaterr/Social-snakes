@@ -2,12 +2,14 @@ import Post from '../models/post'
 import 'express-async-errors'
 import formidable from 'formidable'
 import fs from 'fs'
+import sharp from 'sharp'
+import { v4 as uuidv4 } from 'uuid'
 
 
 const listNewsfeed = async (req, res) => {
 	let following = req.profile.following
 	following.push(req.profile._id)
-	const posts = await Post.find({ postedBy: { $in: following }})
+	const posts = await Post.find({ postedBy: { $in: following }}).select('-photo.data')
 		.populate('comments.postedBy', '_id name')
 		.populate('postedBy', '_id name')
 		.sort('-created')
@@ -24,17 +26,18 @@ const listByUser = async (req, res) => {
 	res.json(posts)
 }
 
-const create = (req, res, next) => {
+const create = async (req, res, next) => {
 	let form = new formidable.IncomingForm()
 	form.keepExtensions = true
 	form.parse(req, async (err, fields, files) => {
 		if (err) {
 			return res.status(400).json({ error: 'Image could not be uploaded'})
 		}
-		let post = new Post(fields)
-		post.postedBy = req.auth.id
+		const post = new Post(fields)
+		post.postedBy = req.profile
 		if (files.photo) {
-			post.photo.data = fs.readFileSync(files.photo.path)
+			const resizedImage = await sharp(fs.readFileSync(files.photo.path)).resize({ height: 600, width: 600}).toFile('./x')
+			post.photo.data = fs.readFileSync('./x')
 			post.photo.contentType = files.photo.type
 		}
 		await post.save()
@@ -87,6 +90,7 @@ const comment = async (req, res) => {
 
 	const comment = req.body.comment
 	comment.postedBy = req.auth.id
+	comment.id = uuidv4()
 	const result = await Post.findByIdAndUpdate(req.body.postId, { $addToSet: { comments: comment} }, { new: true })
 		.populate('comments.postedBy', '_id name')
 		.populate('postedBy', '_id name')

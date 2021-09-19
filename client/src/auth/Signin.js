@@ -44,8 +44,9 @@ const Signin = (props) => {
 	const handleChange = name => event => {
 		setValues({ ...values, [name]: event.target.value })
 	}
-
+	let timeout
 	const handleSubmit = async (e) => {
+		
 		e.preventDefault()
 		const user = {
 			email: values.email || undefined,
@@ -59,6 +60,10 @@ const Signin = (props) => {
 			
 		} catch(error) {
 			setValues({ ...values, error: error.response.data.error })
+			clearTimeout(timeout)
+			timeout = setTimeout(() => {
+				setValues({ ...values, error: ''})
+			}, 7000)
 		}
 	}
 
@@ -95,7 +100,7 @@ const Signin = (props) => {
 					}
 				</CardContent>
 				<CardActions>
-					<Button color="primary" variant="contained" onClick={handleSubmit}
+					<Button  variant="contained" onClick={handleSubmit}
 						className={classes.submit}>
 							Submit
 						</Button>

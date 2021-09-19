@@ -26,7 +26,6 @@ const userSchema = new mongoose.Schema({
 	updated: Date,
 	passwordHash: {
 		type: String,
-		minlength: 5,
 		required: true
 	},
 	about: {
@@ -69,6 +68,7 @@ userSchema.set('toJSON', {
 		delete returnedObject._id
 		delete returnedObject.__v
 		delete returnedObject.passwordHash
+
 	}
 })
 

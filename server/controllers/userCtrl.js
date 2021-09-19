@@ -3,6 +3,7 @@ import { extend } from 'lodash'
 import 'express-async-errors'
 import formidable from 'formidable'
 import fs from 'fs'
+import sharp from 'sharp'
 
 
 
@@ -19,7 +20,7 @@ const create = async (req, res) => {
 }
 
 const list = async (req, res) => {
-	const users = await User.find({})
+	const users = await User.find({}).select('-photo.data')
 	res.json(users)
 }
 
@@ -51,7 +52,8 @@ const update = async (req, res) => {
 		user = extend(user, fields)
 		user.updated = Date.now()
 		if(files.photo) {
-			user.photo.data = fs.readFileSync(files.photo.path)
+			const resizedImage = await sharp(fs.readFileSync(files.photo.path)).resize({ height: 600, width: 600}).toFile('./x')
+			user.photo.data = fs.readFileSync('./x')
 			user.photo.contentType = files.photo.type
 		}
 		await user.save()

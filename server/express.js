@@ -20,9 +20,9 @@ import fs from 'fs'
 import React from 'react'
 import ReactDOMServer from 'react-dom/server'
 import { StaticRouter } from 'react-router-dom'
-import MainRouter from '../client/src/MainRouter'
+import MainRouter from './client/src/MainRouter'
 import { ServerStyleSheets, ThemeProvider } from '@material-ui/core'
-import theme from '../client/src/theme'
+import theme from './client/src/theme'
 
 
 
@@ -61,7 +61,7 @@ app.get('*', (req, res) => {
 		)
 	)
 
-	if(context.url) {
+	if (context.url) {
 		return res.redirect(303, context.url)
 	}
 
