@@ -100,7 +100,7 @@ const Signin = (props) => {
 					}
 				</CardContent>
 				<CardActions>
-					<Button color="primary" variant="contained" onClick={handleSubmit}
+					<Button  variant="contained" onClick={handleSubmit}
 						className={classes.submit}>
 							Submit
 						</Button>
